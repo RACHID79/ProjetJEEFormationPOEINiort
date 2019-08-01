@@ -14,4 +14,8 @@ public abstract class DAOFactory {
 		return new UtilisateurDAOJdbcImpl();
 	}
 
+	public static RestaurantDAO getRestaurantDAO() {
+		return new RestaurantDAOJdbcImpl();
+	}
+
 }

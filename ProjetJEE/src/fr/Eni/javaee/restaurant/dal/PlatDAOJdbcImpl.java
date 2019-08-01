@@ -73,7 +73,6 @@ public class PlatDAOJdbcImpl implements PlatDAO {
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				System.out.println("Id retour BDD " + rs.getInt(1));
 				listePlats.add(new Plat(rs.getInt(1), rs.getFloat(2), rs.getString(3), rs.getString(4), rs.getString(5),
 						rs.getString(6), rs.getInt(7),rs.getInt(8), rs.getString(9), rs.getString(10)));
 			}

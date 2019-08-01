@@ -40,55 +40,7 @@ public class ServletdeConnexion extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	String mail = null;
-	String mot_de_passe = null;
-	//String exemple;
 	
-	UtilisateurManager utilisateurmanager = new UtilisateurManager();
-	
-	try {
-		if (utilisateurmanager.getUtilisateur(mail, mot_de_passe) == -1)
-		{
-//		int i=0;
-			String error = null;
-			// il ya erreur
-			error = "il y a une erreur";		
-			request.setAttribute("error", error);
-			tentative++;
-			if(tentative==3) {
-				tentative=0;
-
-				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/Inscription.jsp");
-
-				rd.forward(request, response);
-			}
-
-			//erreur
-		}else
-		{
-			int idUtilisateur = 0;
-			//ok
-			try {
-//				Création ou récuperation de session
-				HttpSession session=request.getSession();
-				//Mise en session d'une chaîne de caractère
-				Utilisateur utilisateur = utilisateurmanager.selectUtilisateurByIdUtilisateur(idUtilisateur);
-				utilisateur.getRoles();
-				session.setAttribute("role", utilisateur.getRoles().get(0));
-				session.setMaxInactiveInterval(10*60);
-			} catch (BusinessException e) {
-				
-				e.printStackTrace();
-			}
-	
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/Accueil.jsp");
-
-			rd.forward(request, response);}
-		
-	} catch (BusinessException e) {
-		e.printStackTrace();
-	}
-		 
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/Connexion.jsp");
 		rd.forward(request, response);
 	}
@@ -98,7 +50,57 @@ public class ServletdeConnexion extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		doGet(request, response);
+		String mailAsString = request.getParameter("mail");
+		String mot_de_passeAsString = request.getParameter("mot_de_passe");
+		//String exemple;
+		
+		UtilisateurManager utilisateurmanager = new UtilisateurManager();
+		
+		try {
+			String mail = null;
+			String mot_de_passe = null;
+			if (utilisateurmanager.getUtilisateur(mail, mot_de_passe) == -1)
+			{
+//			int i=0;
+				String error = null;
+				// il ya erreur
+				error = "il y a une erreur";		
+				request.setAttribute("error", error);
+				tentative++;
+				if(tentative==3) {
+					tentative=0;
+
+					RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/Inscription.jsp");
+
+					rd.forward(request, response);
+				}
+
+				//erreur
+			}else
+			{
+				int idUtilisateur = 0;
+				//ok
+				try {
+//					Création ou récuperation de session
+					HttpSession session=request.getSession();
+					//Mise en session d'une chaîne de caractère
+					Utilisateur utilisateur = utilisateurmanager.selectUtilisateurByIdUtilisateur(idUtilisateur);
+					utilisateur.getRoles();
+					session.setAttribute("role", utilisateur.getRoles().get(0));
+					session.setMaxInactiveInterval(10*60);
+				} catch (BusinessException e) {
+					
+					e.printStackTrace();
+				}
+		
+				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/Accueil.jsp");
+
+				rd.forward(request, response);}
+			
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+			 
 	}
 
 }

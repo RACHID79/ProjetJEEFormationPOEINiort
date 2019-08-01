@@ -51,4 +51,14 @@ CONSTRAINT [FK_ru_utilisateur] FOREIGN KEY (id_utilisateur) REFERENCES utilisate
 );
 go
 
+CREATE TABLE restaurant (
+id_restaurant INT NOT NULL IDENTITY(1,1) ,
+nom varchar(50) not null,
+map_url varchar(520) not null,
+url_image varchar(50)  null,
+CONSTRAINT [PK_restaurant] PRIMARY KEY CLUSTERED (id_restaurant)
+);
+go
+
+
 

@@ -16,11 +16,16 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	// Requete SQL pour la m�thod Insert
 	private static final String reqSql_Insert = "INSERT INTO utilisateur(nom,prenom,email,mdp,commentaire) VALUES(?,?,?,?,?)";
 	// Requete SQL pour la m�thod reqSql_gteIdUtilisateurByMailPassword
-	private static final String reqSql_getIdUtilisateurByMailPassword = "SELECT id_utilisateur FROM utilisateur where mail=? AND mdp=?";
+	private static final String reqSql_getIdUtilisateurByMailPassword = "SELECT id_utilisateur FROM utilisateur where email=? AND mdp=?";
 	// Requete SQL pour la m�thod reqSql_gteIdUtilisateurByMailPassword
 	private static final String reqSql_selectUtilisateurById = "SELECT id_utilisateur,nom,prenom,email,commentaire FROM utilisateur where id_utilisateur=?";
 	// Requete SQL pour la m�thod reqSql_gteIdUtilisateurByMailPassword
-	private static final String reqSql_selectCommentaireByIdUtilisateur = "SELECT id_utilisateur,nom,prenom,email,commentaire FROM utilisateur where id_utilisateur=?";
+	private static final String reqSql_getCommentairesByIdUtilisateur = "SELECT c.id_commentaire,c.note,c.commentaire,c.date, "
+			+ "		p.id_plat, p.prix, p.nom, p.presentation, p.niveau, p.cout, p.nbconvive, p.nbcommande, p.listingredient, p.imageurl,"
+			+ "		u.id_utilisateur, u.nom, u.prenom, u.email, u.commentaire" + "	" + "		"
+			+ "		FROM commentaire c "
+			+ "			inner join utilisateur u on u.id_utilisateur = c.id_utilisateur "
+			+ "			inner join plat p on p.id_plat = c.id_plat  " + "	" + "		WHERE c.id_utilisateur =?";
 	// Requete SQL pour la m�thod reqSql_selectRolesByIdUtilisateur
 	private static final String reqSql_selectRolesByIdUtilisateur = "SELECT code_role FROM role_utilisateur WHERE id_utilisateur = ?";
 
@@ -121,19 +126,25 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 		List<Commentaire> listCommentaire = new ArrayList<Commentaire>();
 
 		try (Connection cnx = ConnectionProvider.getConnection()) {
-			PreparedStatement pstmt = cnx.prepareStatement(reqSql_selectCommentaireByIdUtilisateur);
+			PreparedStatement pstmt = cnx.prepareStatement(reqSql_getCommentairesByIdUtilisateur);
 			pstmt.setInt(1, idUtilisateur);
 			ResultSet rs = pstmt.executeQuery();
 			Plat newPlat = null;
-
+/* 	private static final String reqSql_getCommentairesByIdUtilisateur = "SELECT c.id_commentaire,c.note,c.commentaire,c.date, "
+			+ "		p.id_plat, p.prix, p.nom, p.presentation, p.niveau, p.cout, p.nbconvive, p.nbcommande, p.listingredient, p.imageurl,"
+			+ "		u.id_utilisateur, u.nom, u.prenom, u.email, u.commentaire" + "	" + "		"
+			+ "		FROM commentaire c "
+			+ "			inner join utilisateur u on u.id_utilisateur = c.id_utilisateur "
+			+ "			inner join plat p on p.id_plat = c.id_plat  " + "	" + "		WHERE c.id_utilisateur =?";
+ */		
 			while (rs.next()) {
 				if (newPlat == null) {
-					newPlat = new Plat(rs.getInt(1), rs.getFloat(2), rs.getString(3), rs.getString(4), rs.getString(5),
-							rs.getString(6), rs.getInt(7),rs.getInt(8), rs.getString(9), rs.getString(10));
+					newPlat = new Plat(rs.getInt(5), rs.getFloat(6), rs.getString(7), rs.getString(8), rs.getString(9),
+							rs.getString(10), rs.getInt(11),rs.getInt(12), rs.getString(13), rs.getString(14));
 					System.out.println("newPlat pour l'id utilisateur " + idUtilisateur + " : \n" + newPlat.toString());
 				}
-				Utilisateur newUtilisateur = new Utilisateur(rs.getInt(14), rs.getString(15), rs.getString(16),
-						rs.getString(17), rs.getString(18));
+				Utilisateur newUtilisateur = new Utilisateur(rs.getInt(15), rs.getString(16), rs.getString(17),
+						rs.getString(18), rs.getString(19));
 				System.out.println("newUtilisateur du commentaire pour l'id utilisateur " + idUtilisateur + " : \n"
 						+ newUtilisateur.toString());
 				listCommentaire.add(new Commentaire(rs.getInt(1), rs.getInt(2), rs.getString(3), newUtilisateur,
