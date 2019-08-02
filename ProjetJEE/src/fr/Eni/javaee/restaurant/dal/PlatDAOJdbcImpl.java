@@ -13,14 +13,15 @@ import fr.Eni.javaee.restaurant.bo.Utilisateur;
 
 public class PlatDAOJdbcImpl implements PlatDAO {
 	// Requete SQL pour la method Insert
-	private static final String reqSql_Insert = "INSERT INTO plat(prix,nom,presentation,niveau,cout,nbconvive,listingredient,imageurl) VALUES(?,?,?,?,?,?,?,?)";
+	private static final String reqSql_Insert = "INSERT INTO plat(prix,nom,presentation,niveau,cout,nbconvive,nbcommande,listingredient,imageurl) VALUES(?,?,?,?,?,?,?,?,?)";
 	// Requete SQL pour la method reqSql_getListeCommentaireByIdPlat
 	private static final String reqSql_getListeCommentaireByIdPlat = "SELECT c.id_commentaire,c.note,c.commentaire,c.date, "
 			+ "		p.id_plat, p.prix, p.nom, p.presentation, p.niveau, p.cout, p.nbconvive, p.nbcommande, p.listingredient, p.imageurl,"
-			+ "		u.id_utilisateur, u.nom, u.prenom, u.email, u.commentaire" + "	" + "		"
+			+ "		u.id_utilisateur, u.nom, u.prenom, u.email,u.mdp, u.commentaire"
 			+ "		FROM commentaire c "
 			+ "			inner join utilisateur u on u.id_utilisateur = c.id_utilisateur "
-			+ "			inner join plat p on p.id_plat = c.id_plat  " + "	" + "		WHERE c.id_plat =?";
+			+ "			inner join plat p on p.id_plat = c.id_plat  " 
+			+ "		WHERE c.id_plat =?";
 	// Requete SQL pour la method SelectALL
 	private static final String reqSql_selectAll = "SELECT id_plat,prix,nom,presentation,niveau,cout,nbconvive,nbcommande,listIngredient,imageURL FROM plat order by id_plat";
 	// Requete SQL pour la method reqSql_getPlatByIdPlat
@@ -115,7 +116,7 @@ public class PlatDAOJdbcImpl implements PlatDAO {
 					System.out.println("newPlat pour l'id " + idPlat + " : \n" + newPlat.toString());
 				}
 				Utilisateur newUtilisateur = new Utilisateur(rs.getInt(15), rs.getString(16), rs.getString(17),
-						rs.getString(18), rs.getString(19));
+						rs.getString(18), rs.getString(19),rs.getString(20));
 				System.out.println(
 						"newUtilisateur du commentaire pour l'id plat " + idPlat + " : \n" + newUtilisateur.toString());
 				listeCommentaires.add(new Commentaire(rs.getInt(1), rs.getInt(2), rs.getString(3), newUtilisateur,

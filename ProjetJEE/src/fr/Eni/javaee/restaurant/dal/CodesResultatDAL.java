@@ -24,6 +24,8 @@ public abstract class CodesResultatDAL {
 	 * Echec de la suppression d'un commentaire
 	 */
 	public static final int DELETE_AVIS_ECHEC=30001;
+
+	public	static final int UPDATE_MAILMDP_UTILISATEUR_ECHEC = 40001;
 	
 	
 }

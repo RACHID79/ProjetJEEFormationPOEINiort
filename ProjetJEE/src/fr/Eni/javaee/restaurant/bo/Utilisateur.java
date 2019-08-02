@@ -4,6 +4,18 @@ import java.util.List;
 
 public class Utilisateur {
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		Utilisateur utilisateur = (Utilisateur) obj;
+		return mdp.equals(mdp) && email.equals(utilisateur.email);
+	}
+
 	private int id;
 	private String nom;
 	private String prenom;
@@ -68,11 +80,12 @@ public class Utilisateur {
 		this.roles = roles;
 	}
 
-	public Utilisateur(int id, String nom, String prenom, String email, String commentaire) {
+	public Utilisateur(int id, String nom, String prenom, String email,String mdp, String commentaire) {
 		setId(id);
 		setNom(prenom);
 		setPrenom(prenom);
 		setEmail(email);
+		setMdp(mdp);
 		setCommentaire(commentaire);
 	}
 

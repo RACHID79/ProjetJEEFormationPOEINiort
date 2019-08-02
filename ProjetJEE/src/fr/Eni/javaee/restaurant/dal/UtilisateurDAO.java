@@ -12,10 +12,12 @@ public interface UtilisateurDAO {
 
 	public void insert(Utilisateur utilisateur) throws BusinessException;
 
-	public List<Commentaire> getCommentairesByIdUtilisateur(int idCommentaire) throws BusinessException;
+	public List<Commentaire> getCommentairesByIdUtilisateur(int idUtilisateur) throws BusinessException;
 
 	public int getIdUtilisateurByMailPassword(String mail, String password) throws BusinessException;
 
 	public void selectRolesByIdUtilisateur(Utilisateur utilisateur) throws BusinessException;
+
+	public void update(Utilisateur utilisateur) throws BusinessException;
 
 }

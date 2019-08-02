@@ -19,6 +19,11 @@ public class UtilisateurManager {
 		utilisateurDAO.insert(utilisateur);
 	}
 
+	public void update(Utilisateur utilisateur) throws BusinessException {
+		System.out.println("utilisateurDAO.update "+utilisateur.toString());
+		utilisateurDAO.update(utilisateur);
+	}
+
 	public Utilisateur selectUtilisateurByIdUtilisateur(int idUtilisateur) throws BusinessException {
 		return utilisateurDAO.selectUtilisateurById(idUtilisateur);
 	}
@@ -38,5 +43,10 @@ public class UtilisateurManager {
 
 		return utilisateurDAO.getCommentairesByIdUtilisateur(idUtilisateur);
 	}
-
+	
+	public void selectRolesByIdUtilisateur(Utilisateur utilisateur) throws BusinessException{
+		utilisateurDAO.selectRolesByIdUtilisateur(utilisateur);
+		
+	}
+	
 }

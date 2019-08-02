@@ -32,11 +32,11 @@
 						Boolean isActif = true;
 						for (Restaurant restaurant : listeResto) {
 					%>
-					<div id="restaurant<%=restaurant.getId()%>" class="col-sm-12 col-lg-6 mb-4">
+					<div id="restaurant<%=restaurant.getId()%>" class="col-xs-12 col-lg-6 mb-4">
 						<div class="row">
 							<div class="col-md-10">
 								<img src="<%=request.getContextPath()%>/image/<%=restaurant.getImageURL()%>"
-									alt="Responsive image">
+									width="500" height="380" alt="Responsive image">
 							</div>
 						</div>
 						<div class="row">
@@ -45,10 +45,10 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-md-12">
+							<div class="col-md-12 align-center">
 								<iframe
-									src="<%=restaurant.getMapURL()%>
-									width="400" height="300" frameborder="0" allowfullscreen></iframe>
+									src="<%=restaurant.getMapURL()%>"
+									 frameborder="0" allowfullscreen></iframe>
 							</div>
 						</div>
 					</div>

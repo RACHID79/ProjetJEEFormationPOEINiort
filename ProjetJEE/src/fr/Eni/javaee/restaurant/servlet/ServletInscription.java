@@ -9,7 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import fr.Eni.javaee.restaurant.BusinessException;
 import fr.Eni.javaee.restaurant.bll.UtilisateurManager;
 import fr.Eni.javaee.restaurant.bo.Utilisateur;
 
@@ -18,8 +20,12 @@ import fr.Eni.javaee.restaurant.bo.Utilisateur;
  */
 @WebServlet("/ServletInscription")
 public class ServletInscription extends HttpServlet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static final String VUE = "/WEB-INF/jsp/Inscription.jsp";
-	public static final String REDIRECTION = "/WEB-INF/jsp/Accueil.jsp";
+	public static final String REDIRECTION = "/RedirigeAccueil";
 	public static final String CHAMP_EMAIL = "email";
 	public static final String CHAMP_PASS = "motdepasse";
 	public static final String CHAMP_CONF = "confirmation";
@@ -50,23 +56,43 @@ public class ServletInscription extends HttpServlet {
 		System.out.println(email);
 		/* Validation du champ email. */
 		try {
+			System.out.println("try validationEmail");
 			validationEmail(email);
+
 		} catch (Exception e) {
 			erreurs.put(CHAMP_EMAIL, e.getMessage());
 		}
 
 		/* Validation des champs mot de passe et confirmation. */
 		try {
+			System.out.println("try validationMotsDePasse");
 			validationMotsDePasse(motDePasse, confirmation);
 		} catch (Exception e) {
 			erreurs.put(CHAMP_PASS, e.getMessage());
 		}
+		System.out.println(erreurs.toString());
 
+		System.out.println(erreurs.isEmpty());
 		/* Initialisation du résultat global de la validation. */
 		if (erreurs.isEmpty()) {
 			UtilisateurManager um = new UtilisateurManager();
-			Utilisateur utilisateurinsert = um.insert(email, motDePasse, confirmation, nom, prenom);
+			Utilisateur utilisateur = null;
+			try {
+				utilisateur = new Utilisateur(nom, prenom, email, motDePasse, null);
+				um.insert(utilisateur);
+			} catch (BusinessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			resultat = "Succès de l'inscription.";
+
+			// Création ou récuperation de session
+			HttpSession session = request.getSession();
+			// Mise en session d'une chaîne de caractère
+			session.setAttribute("utilisateur", utilisateur);
+
+			session.setMaxInactiveInterval(10 * 60);
+
 		} else {
 			resultat = "Échec de l'inscription.";
 		}
@@ -84,7 +110,7 @@ public class ServletInscription extends HttpServlet {
 	 */
 	private void validationEmail(String email) throws Exception {
 		if (email != null && email.trim().length() != 0) {
-			if (!email.matches("([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)")) {
+			if (false /* !email.matches("([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)") */) {
 				throw new Exception("Merci de saisir une adresse mail valide.");
 			}
 		} else {

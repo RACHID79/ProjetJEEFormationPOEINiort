@@ -41,6 +41,10 @@ public class PlatManager {
 	public List<Commentaire> selectCommentaireByIdPlat(int idPlat) throws BusinessException {
 		List<Commentaire> listeCommentaire = new ArrayList<Commentaire>();
 		listeCommentaire = platDAO.getListeCommentaireByIdPlat(idPlat);
+		UtilisateurManager um = new UtilisateurManager();
+		for (Commentaire commentaire : listeCommentaire) {
+			um.selectRolesByIdUtilisateur(commentaire.getUtilisateur());
+		}
 		return listeCommentaire;
 	}
 
